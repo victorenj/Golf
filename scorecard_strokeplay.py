@@ -16,7 +16,8 @@ import pandas as pd
 def main():
     # Title of the app
     st.logo("assets/pgt_logo2_blk.jpg", size="large")
-    st.title("Golf Scorecard App")
+    st.title("PGT Scorecard")
+    st.subheader("Pinoy Golf Tour")
     
     # Sidebar for player input
     st.sidebar.header("Player Information")
@@ -28,7 +29,6 @@ def main():
         player_names.append(player_name)
     
     # Main scorecard section
-    st.header("Scorecard")
     holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
     
     # Initialize a DataFrame to store scores
