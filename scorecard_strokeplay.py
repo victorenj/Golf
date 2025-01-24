@@ -28,6 +28,12 @@ def main():
         player_name = st.sidebar.text_input(f"Enter name for Player {i + 1}", value=f"Player {i + 1}")
         player_names.append(player_name)
     
+    st.sidebar.selectbox(
+            "Golf Course",
+            ("Knights Play Golf", "Par 3 Course"),
+            index=0
+        )
+
     # Main scorecard section
     holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
     
@@ -41,7 +47,7 @@ def main():
     for player, column in zip(player_names, columns):
         with column:
             for hole in holes:
-                score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=0, max_value=10, value=0, key=f"{player}_{hole}")
+                score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
     # -----------------------------------------------------------------------------------
     
     # Display the scorecard table
