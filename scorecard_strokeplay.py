@@ -11,15 +11,6 @@
 
 import streamlit as st
 import pandas as pd
-import tomllib
-from pprint import pprint
-
-
-def load_toml():
-    """Load TOML data from file"""
-    with open('.streamlit\config.toml', 'rb') as f:
-        toml_data: dict = tomllib.load(f)
-        return toml_data
 
 
 def main():
@@ -65,6 +56,4 @@ def main():
         st.write(f"{player}: {total} strokes")
 
 if __name__ == '__main__':
-    data: dict = load_toml()
-    pprint(data, sort_dicts=False)
     main()
