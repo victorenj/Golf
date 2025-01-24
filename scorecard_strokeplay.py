@@ -46,6 +46,7 @@ def main():
 
     for player, column in zip(player_names, columns):
         with column:
+            st.subheader(f'{player}')
             for hole in holes:
                 score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
     # -----------------------------------------------------------------------------------
