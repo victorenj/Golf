@@ -51,7 +51,6 @@ def main():
     score_data = pd.DataFrame(index=holes, columns=player_names)
     
     # Input scores for each hole and player
-    # -----------------------------------------------------------------------------------
     columns = st.columns(4, gap="small", vertical_alignment="center")
 
     for player, column in zip(player_names, columns):
@@ -59,10 +58,9 @@ def main():
             st.subheader(f'{player}')
             for hole in holes:
                 if course_par == "Par 3 Course":
-                    score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
+                    score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
                 if course_par == "Par 4 Course":
-                    score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=1, max_value=10, value=4, key=f"{player}_{hole}")
-    # -----------------------------------------------------------------------------------
+                    score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=10, value=4, key=f"{player}_{hole}")
     
     scol1, scol2 = st.columns(2, gap='large')
     with scol1:
