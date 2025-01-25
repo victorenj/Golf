@@ -6,7 +6,7 @@
 # > Open CLI
 # > cd C:\Users\PC\Desktop\Golf
 # > Scripts\activate
-# > streamlit run scorecard.py
+# > streamlit run scorecard_strokeplay.py
 # ----------------------------------------------------------
 
 import streamlit as st
@@ -14,10 +14,20 @@ import pandas as pd
 
 
 def main():
+    '''Create scorecard'''
+    
+    def total_scores():
+        '''Compute total scores for each player'''
+        st.header("Total Scores")
+        total_scores = score_data.astype(int).sum(axis=0)  # Convert data to integers and sum by column (player)
+        for player, total in total_scores.items():
+            st.subheader(f"Score for {player}")
+            st.write(f"{player}: {total} strokes")
+
     # Title of the app
     st.logo("assets/pgt_logo2_blk.jpg", size="large")
     st.title("PGT Scorecard")
-    st.subheader("Pinoy Golf Tour")
+    st.subheader("*Pinoy Golf Tour*")
     
     # Sidebar for player input
     st.sidebar.header("Player Information")
@@ -28,9 +38,9 @@ def main():
         player_name = st.sidebar.text_input(f"Enter name for Player {i + 1}", value=f"Player {i + 1}")
         player_names.append(player_name)
     
-    st.sidebar.selectbox(
-            "Golf Course",
-            ("Knights Play Golf", "Par 3 Course"),
+    course_par = st.sidebar.selectbox(
+            "Golf Course Par Score",
+            ("Par 3 Course", "Par 4 Course"),
             index=0
         )
 
@@ -48,19 +58,20 @@ def main():
         with column:
             st.subheader(f'{player}')
             for hole in holes:
-                score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
+                if course_par == "Par 3 Course":
+                    score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
+                if course_par == "Par 4 Course":
+                    score_data.loc[hole, player] = st.number_input(f"{hole} Score ({player})", min_value=1, max_value=10, value=4, key=f"{player}_{hole}")
     # -----------------------------------------------------------------------------------
     
-    # Display the scorecard table
-    st.subheader("Scorecard Table")
-    st.dataframe(score_data)
-    
-    # Calculate and display total scores
-    st.header("Total Scores")
-    total_scores = score_data.astype(int).sum(axis=0)  # Convert data to integers and sum by column (player)
-    for player, total in total_scores.items():
-        st.subheader(f"Score for {player}")
-        st.write(f"{player}: {total} strokes")
+    scol1, scol2 = st.columns(2, gap='large')
+    with scol1:
+        # Display the scorecard table
+        st.subheader("Scorecard Table")
+        st.dataframe(score_data)
+    with scol2:
+        total_scores()
+
 
 if __name__ == '__main__':
     main()
