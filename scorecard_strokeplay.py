@@ -39,18 +39,22 @@ def main():
         player_names.append(player_name)
     
     # Sidebar for course input
-    course_par = st.sidebar.selectbox(
-            "Golf Course Par Score",
-            ("Par 3 Course", "Par 4 Course"),
-            index=0
-        )
+    course_name = ["Knights Play", "Brevofield", "Quaker Creek", "Raleigh Golf", "Zebulon CC", "Custom"]
+
+    golf_course = st.sidebar.selectbox("Golf Course", course_name)
+    if golf_course == "Custom":
+        custom_input = st.sidebar.text_input("Write the name of Golf Course :")
+        if custom_input:
+            st.write(f'You are playing :  **_{custom_input} Golf Course_**')
+    else:
+        st.write(f'You are playing :  **_{golf_course} Golf Course_**')
 
     nine_holes = st.sidebar.radio("Number of holes :", ['9 holes', '18 holes', '27 holes'], horizontal=True, index=1)
     if nine_holes == '9 holes':
         holes = [f"Hole {i}" for i in range(1, 10)]  # List of holes (1 to 9)    
-    if nine_holes == '18 holes':
+    elif nine_holes == '18 holes':
         holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
-    if nine_holes == '27 holes':
+    elif nine_holes == '27 holes':
         holes = [f"Hole {i}" for i in range(1, 28)]  # List of holes (1 to 27)
 
     # Initialize a DataFrame to store scores
@@ -63,9 +67,9 @@ def main():
         with column:
             st.subheader(f'{player}')
             for hole in holes:
-                if course_par == "Par 3 Course":
+                if golf_course == "Knights Play":
                     score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
-                if course_par == "Par 4 Course":
+                else:
                     score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=10, value=4, key=f"{player}_{hole}")
 
     scol1, scol2 = st.columns(2, gap='large')
