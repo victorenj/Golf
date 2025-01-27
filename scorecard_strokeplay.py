@@ -1,5 +1,5 @@
 ## Author: Victor E Balasoto
-## Last Update: 1/23/25
+## Last Update: 1/27/25
 ## Purpose: For PGT golfers use
 
 # ----------------------------------------------------------
@@ -74,6 +74,7 @@ def main():
         st.subheader("Scorecard Table")
         st.dataframe(score_data)
     with scol2:
+        # Display total scores for players
         total_scores()
 
 
