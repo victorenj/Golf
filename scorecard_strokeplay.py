@@ -38,18 +38,24 @@ def main():
         player_name = st.sidebar.text_input(f"Enter name for Player {i + 1}", value=f"Player {i + 1}")
         player_names.append(player_name)
     
+    # Sidebar for course input
     course_par = st.sidebar.selectbox(
             "Golf Course Par Score",
             ("Par 3 Course", "Par 4 Course"),
             index=0
         )
 
-    # Main scorecard section
-    holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
-    
+    nine_holes = st.sidebar.radio("Number of holes :", ['9 holes', '18 holes', '27 holes'], horizontal=True, index=1)
+    if nine_holes == '9 holes':
+        holes = [f"Hole {i}" for i in range(1, 10)]  # List of holes (1 to 9)    
+    if nine_holes == '18 holes':
+        holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
+    if nine_holes == '27 holes':
+        holes = [f"Hole {i}" for i in range(1, 28)]  # List of holes (1 to 27)
+
     # Initialize a DataFrame to store scores
     score_data = pd.DataFrame(index=holes, columns=player_names)
-    
+
     # Input scores for each hole and player
     columns = st.columns(4, gap="small", vertical_alignment="center")
 
@@ -61,7 +67,7 @@ def main():
                     score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
                 if course_par == "Par 4 Course":
                     score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=10, value=4, key=f"{player}_{hole}")
-    
+
     scol1, scol2 = st.columns(2, gap='large')
     with scol1:
         # Display the scorecard table
