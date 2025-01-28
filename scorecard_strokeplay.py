@@ -39,7 +39,7 @@ def main():
         player_names.append(player_name)
     
     # Sidebar for course input
-    course_name = ["Knights Play", "Brevofield", "Quaker Creek", "Raleigh Golf", "Zebulon CC", "Custom"]
+    course_name = ["Knights Play", "Brevofield", "Quaker Creek", "Raleigh GA", "Zebulon CC", "Custom"]
 
     golf_course = st.sidebar.selectbox("Golf Course", course_name)
     if golf_course == "Custom":
