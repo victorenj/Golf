@@ -24,6 +24,15 @@ def main():
             st.subheader(f"Score for {player}")
             st.write(f"{player}: {total} strokes")
 
+    ## Read specific columns by index
+    df_names = pd.read_excel('GolfCoursePar.xlsx', usecols=["Knights Play", "Brevofield", "Quaker Creek", "Raleigh Golf", "Zebulon CC"])
+    
+    kp = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 1])
+    bf = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 2])
+    qc = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 3])
+    rg = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 4])
+    zc = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 5])
+
     # Title of the app
     st.logo("assets/pgt_logo2_blk.jpg", size="large")
     st.title("PGT Scorecard")
@@ -40,8 +49,8 @@ def main():
     
     # Sidebar for course input
     course_name = ["Knights Play", "Brevofield", "Quaker Creek", "Raleigh GA", "Zebulon CC", "Custom"]
-
     golf_course = st.sidebar.selectbox("Golf Course", course_name)
+
     if golf_course == "Custom":
         custom_input = st.sidebar.text_input("Write the name of Golf Course :")
         if custom_input:
@@ -56,6 +65,17 @@ def main():
         holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
     elif nine_holes == '27 holes':
         holes = [f"Hole {i}" for i in range(1, 28)]  # List of holes (1 to 27)
+
+    if golf_course == "Knights Play":
+        st.sidebar.write(kp)
+    elif golf_course == "Brevofield":
+        st.sidebar.write(bf)
+    elif golf_course == "Quaker Creek":
+        st.sidebar.write(qc)
+    elif golf_course == "Raleigh GA":
+        st.sidebar.write(rg)
+    elif golf_course == "Zebulon CC":
+        st.sidebar.write(zc)
 
     # Initialize a DataFrame to store scores
     score_data = pd.DataFrame(index=holes, columns=player_names)
