@@ -12,14 +12,12 @@
 import streamlit as st
 import pandas as pd
 
-
 st.set_page_config(
     page_title="PGT Scorecard",
     page_icon=":golfer:",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 
 def main():
     '''Create scorecard'''
@@ -33,17 +31,14 @@ def main():
 
     ## Read specific columns by index
     df_names = pd.read_excel('GolfCoursePar.xlsx', usecols=["Knights Play", "Brevofield", "Quaker Creek", "Raleigh Golf", "Zebulon CC"])
-    
     kp = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 1])
     bf = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 2])
     qc = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 3])
     rg = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 4])
     zc = pd.read_excel('GolfCoursePar.xlsx', usecols=[0, 5])
 
-    # Title of the app
-    st.logo("assets/pgt_logo2_blk.jpg", size="large")
-    
     # --- Sidebar for player input ---
+    st.logo("assets/pgt_logo2_blk.jpg", size="large")
     st.sidebar.header("Player Information")
     num_players = st.sidebar.number_input("Number of Players", min_value=1, max_value=4, value=1)
     player_names = []
@@ -88,7 +83,7 @@ def main():
     # --- Hole & total scores ---
     scol1, scol2 = st.columns(2, gap='small')
     with scol1:
-        st.subheader("Scorecard Table")
+        st.subheader("Scorecard")
         st.dataframe(score_data)
     with scol2:
         total_scores()
