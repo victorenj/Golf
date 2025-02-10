@@ -1,5 +1,5 @@
 ## Author: Victor E Balasoto
-## Last Update: 1/27/25
+## Last Update: 2/10/25
 ## Purpose: For PGT golfers use
 
 # ----------------------------------------------------------
@@ -13,16 +13,23 @@ import streamlit as st
 import pandas as pd
 
 
+st.set_page_config(
+    page_title="PGT Scorecard",
+    page_icon=":golfer:",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+
 def main():
     '''Create scorecard'''
-    
+
     def total_scores():
         '''Compute total scores for each player'''
-        st.header("Total Scores")
+        st.subheader("Total Scores")
         total_scores = score_data.astype(int).sum(axis=0)  # Convert data to integers and sum by column (player)
         for player, total in total_scores.items():
-            st.subheader(f"Score for {player}")
-            st.write(f"{player}: {total} strokes")
+            st.write(f"**{player}: {total} strokes**")
 
     ## Read specific columns by index
     df_names = pd.read_excel('GolfCoursePar.xlsx', usecols=["Knights Play", "Brevofield", "Quaker Creek", "Raleigh Golf", "Zebulon CC"])
@@ -35,9 +42,8 @@ def main():
 
     # Title of the app
     st.logo("assets/pgt_logo2_blk.jpg", size="large")
-    st.title("PGT Scorecard")
     
-    # Sidebar for player input
+    # --- Sidebar for player input ---
     st.sidebar.header("Player Information")
     num_players = st.sidebar.number_input("Number of Players", min_value=1, max_value=4, value=1)
     player_names = []
@@ -45,8 +51,8 @@ def main():
     for i in range(num_players):
         player_name = st.sidebar.text_input(f"Enter name for Player {i + 1}", value=f"Player {i + 1}")
         player_names.append(player_name)
-    
-    # Sidebar for course input
+    # --- Sidebar for player input ---
+    # --- Sidebar for course input ---
     course_name = ["Knights Play", "Brevofield", "Quaker Creek", "Raleigh GA", "Zebulon CC", "Custom"]
     golf_course = st.sidebar.selectbox("Golf Course", course_name)
 
@@ -57,14 +63,17 @@ def main():
     else:
         st.subheader(f'**_{golf_course} Golf Course_**')
 
-    nine_holes = st.sidebar.radio("Number of holes :", ['9 holes', '18 holes', '27 holes'], horizontal=True, index=1)
-    if nine_holes == '9 holes':
-        holes = [f"Hole {i}" for i in range(1, 10)]  # List of holes (1 to 9)    
-    elif nine_holes == '18 holes':
-        holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
-    elif nine_holes == '27 holes':
-        holes = [f"Hole {i}" for i in range(1, 28)]  # List of holes (1 to 27)
-
+    holes = [f"Hole {i}" for i in range(1, 19)]  # List of holes (1 to 18)
+    score_data = pd.DataFrame(index=holes, columns=player_names)
+    columns = st.columns(18, gap="small", vertical_alignment="top")
+    for hole, column in zip(holes, columns):
+        with column:
+            #st.subheader(f'{player}')
+            for player in player_names:
+                if golf_course == "Knights Play":
+                    score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
+                else:
+                    score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=10, value=4, key=f"{player}_{hole}")
     if golf_course == "Knights Play":
         st.sidebar.write(kp)
     elif golf_course == "Brevofield":
@@ -75,31 +84,15 @@ def main():
         st.sidebar.write(rg)
     elif golf_course == "Zebulon CC":
         st.sidebar.write(zc)
-
-    # Initialize a DataFrame to store scores
-    score_data = pd.DataFrame(index=holes, columns=player_names)
-
-    # Input scores for each hole and player
-    columns = st.columns(4, gap="small", vertical_alignment="center")
-
-    for player, column in zip(player_names, columns):
-        with column:
-            st.subheader(f'{player}')
-            for hole in holes:
-                if golf_course == "Knights Play":
-                    score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=6, value=3, key=f"{player}_{hole}")
-                else:
-                    score_data.loc[hole, player] = st.number_input(f"{hole} ({player})", min_value=1, max_value=10, value=4, key=f"{player}_{hole}")
-
-    scol1, scol2 = st.columns(2, gap='large')
+    # --- Sidebar for course input ---
+    # --- Hole & total scores ---
+    scol1, scol2 = st.columns(2, gap='small')
     with scol1:
-        # Display the scorecard table
         st.subheader("Scorecard Table")
         st.dataframe(score_data)
     with scol2:
-        # Display total scores for players
         total_scores()
-
+    # --- Hole & total scores ---
 
 if __name__ == '__main__':
     main()
